@@ -1,7 +1,7 @@
 <%@ taglib prefix="html" uri="http://jakarta.apache.org/struts/tags-html" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="form" uri="http://jakarta.apache.org/struts/tags-html" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -30,10 +30,7 @@
 </header>
 
 <main role="main">
-    <%--<html:link action="/main">--%>
-        <%--<spring:message code="mainPage"/>--%>
-    <%--</html:link>--%>
-    <%--<form:form action="selectedNews">--%>
+    <form:form action="deleteNews" method="get">
         <div class="jumbotron">
             <div class="container">
                 <h1 class="display-3"><spring:message code="mainPage"/></h1>
@@ -41,38 +38,39 @@
         </div>
 
     <div class="row">
-        <div class="col-2">
+        <div class="col-1">
             <div class="container">
-                <%--<p class="float-left">--%>
-                    <%--<spring:url value="/selectedNews/${newsId}" var="selectedNewsUrl"/>--%>
-                    <a class="btn btn-primary btn-lg" href="/addNewsPage" role="button"><spring:message
-                            code="addNews"/></a><br><br>
-                    <a><button type="submit" class="btn btn-primary btn-lg"><spring:message code="removeNews"/></button></a>
+                <p class="float-left">
+                    <a class="btn btn-primary btn-md" href="/addNewsPage" role="button"><spring:message
+                            code="addNews"/></a><br>
+                        <br>
+                    <a><button type="submit" class="btn btn-primary btn-md"><spring:message code="removeNews"/></button></a>
                 </p>
             </div>
         </div>
-        <div class="col-10">
+        <div class="col-11">
             <div class="container">
-                <div class="row">
+                <div class="row" >
                     <c:forEach items="${newsList}" var="news">
                         <div class="col-12">
                             <h2>${news.title}</h2>
+
                             <p>${news.brief}</p>
-                            <spring:url value="/selectedNews/${newsId}" var="selectedNewsUrl"/>
-                            <p class="float-right"><a class="btn btn-secondary"  href="${selectedNewsUrl}"
-                                  role="button"><spring:message code="open"/></a>
 
-
-                                <%--<a><html:checkbox property="checkboxValue" value="${news.newsId}"/></a>--%>
+                            <p class="float-right"><a class="btn btn-success"  href="/selectedNews?newsId=${news.newsId}"
+                                                      role="button"><spring:message code="open"/></a>
+                                <input type="checkbox" name="checkedNews" value="${news.newsId}">
+                            <hr>
                             </p>
                         </div>
                     </c:forEach>
                 </div>
             </div>
+
             <hr>
         </div>
         </div>
-    <%--</form:form>--%>
+    </form:form>
 </main>
 <footer class="text-muted">
     <div class="container">

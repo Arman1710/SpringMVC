@@ -1,8 +1,6 @@
 package epam.news.converter.impl;
 
 import epam.news.converter.NewsConverter;
-import epam.news.form.CommentForm;
-import epam.news.form.NewsForm;
 import epam.news.model.dto.CommentDTO;
 import epam.news.model.dto.NewsDTO;
 import epam.news.model.entity.Comment;
@@ -13,18 +11,6 @@ import org.springframework.stereotype.Component;
 public class NewsConverterImpl implements NewsConverter {
     private CommentConverterImpl commentImpl = new CommentConverterImpl();
 
-    @Override
-    public NewsDTO formToDTO(NewsForm newsForm) {
-        NewsDTO newsDTO = new NewsDTO();
-        newsDTO.setContent(newsForm.getContent());
-        newsDTO.setBrief(newsForm.getBrief());
-        newsDTO.setNewsId(newsForm.getNewsId());
-        newsDTO.setTitle(newsForm.getTitle());
-        for (CommentForm commentForm : newsForm.getCommentList()) {
-            newsDTO.getCommentList().add(commentImpl.formToDTO(commentForm));
-        }
-        return newsDTO;
-    }
 
     @Override
     public News DTOToEntity(NewsDTO newsDTO) {
@@ -53,15 +39,4 @@ public class NewsConverterImpl implements NewsConverter {
         return newsDTO;
     }
 
-    @Override
-    public void DTOToForm(NewsDTO newsDTO, NewsForm newsForm) {
-        newsForm.setContent(newsDTO.getContent());
-        newsForm.setBrief(newsDTO.getBrief());
-        newsForm.setNewsId(newsDTO.getNewsId());
-        newsForm.setTitle(newsDTO.getTitle());
-        for (CommentDTO commentDTO : newsDTO.getCommentList()) {
-            CommentForm commentForm = commentImpl.DTOToForm(commentDTO);
-            newsForm.getCommentList().add(commentForm);
-        }
-    }
 }

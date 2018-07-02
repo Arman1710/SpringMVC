@@ -48,4 +48,15 @@ public class CommentDTO {
     public void setCommentId(int commentId) {
         this.commentId = commentId;
     }
+
+    @Override
+    public String toString() {
+        return "CommentDTO{" +
+                "author='" + author + '\'' +
+                ", description='" + description + '\'' +
+                ", dateCreated=" + dateCreated +
+                ", newsId=" + newsId +
+                ", commentId=" + commentId +
+                '}';
+    }
 }

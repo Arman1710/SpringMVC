@@ -1,15 +1,16 @@
 <%@ taglib prefix="html" uri="http://struts.apache.org/tags-html" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
-<%@ taglib prefix="bean" uri="http://struts.apache.org/tags-bean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="tagFile" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <html>
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
           integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-    <title><bean:message key="editNews"/></title>
+    <title><spring:message code="editNews"/></title>
 </head>
 <body>
 <header>
@@ -17,7 +18,7 @@
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/main.do"><bean:message key="mainPage"/></a>
+                    <a class="nav-link" href="/"><spring:message code="mainPage"/></a>
                 </li>
 
             </ul>
@@ -28,14 +29,15 @@
 <section class="jumbotron text-center">
     <div class="container">
         <h1 class="jumbotron-heading">
-            <bean:message key="editNews"/>
+            <spring:message code="editNews"/>
         </h1>
     </div>
 </section>
 
 <main role="main">
     <div class="container">
-        <html:form action="/editNews?newsId=${newsForm.newsId}">
+        <form:form modelAttribute="news" action="editNews" method="post">
+            <form:hidden path="newsId"/>
             <table border="0">
                 <thead>
                 <tr>
@@ -46,28 +48,28 @@
                 <tr>
                     <br>
                     <textarea name="title" id="title" cols="30" rows="1" style="word-wrap: break-word"  class="form-control mr-sm-2" type="textarea"
-                              placeholder="<bean:message key="title"/>" aria-label="Search">${newsForm.title}</textarea>
+                              placeholder="<spring:message code="title"/>" aria-label="Search">${news.title}</textarea>
                 </tr>
                 <tr>
                     <br>
                     <textarea name="brief" id="brief" cols="30" rows="3" style="word-wrap: break-word"  class="form-control mr-sm-2" type="textarea"
-                              placeholder="<bean:message key="brief"/>" aria-label="Search">${newsForm.brief}</textarea>
+                              placeholder="<spring:message code="brief"/>" aria-label="Search">${news.brief}</textarea>
                 </tr>
                 <tr>
                     <br>
                     <textarea name="content" id="content" cols="30" rows="10" style="word-wrap: break-word" class="form-control mr-sm-2" type="textarea"
-                              placeholder="<bean:message key="content"/>" aria-label="Search">${newsForm.content}</textarea>
+                              placeholder="<spring:message code="content"/>" aria-label="Search">${news.content}</textarea>
                 </tr>
                 <tr>
                     <br>
                     <td>
-                        <button type="submit" class="btn btn-primary btn-sm "><bean:message key="submit"/>
+                        <button type="submit" class="btn btn-primary btn-sm "><spring:message code="submit"/>
                         </button>
                     </td>
                 </tr>
                 </tbody>
             </table>
-        </html:form>
+        </form:form>
 
         <tagFile:newsValidateErrors/>
 

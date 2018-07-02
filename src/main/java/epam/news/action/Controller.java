@@ -1,15 +1,13 @@
 package epam.news.action;
 
+import epam.news.model.dto.CommentDTO;
 import epam.news.model.dto.NewsDTO;
 import epam.news.model.entity.News;
 import epam.news.services.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -19,102 +17,74 @@ public class Controller {
     @Autowired
     private NewsService newsService;
 
-//    @Autowired
-//    private NewsConverterImpl newsConverterImpl;
-//
-//    @Autowired
-//    private CommentConverterImpl commentConverterImpl;
-
-
-
     @GetMapping("/")
-    public String showAllNews(ModelMap modelMap){
+    public String showAllNews(ModelMap modelMap) {
         List<News> newsList = newsService.showAllNews();
         modelMap.addAttribute("newsList", newsList);
         return "index";
     }
 
     @GetMapping("/selectedNews")
-    public String selectedNews (@RequestParam("newsId") int newsId, ModelMap modelMap) {
-        System.out.println(newsId);
-//        NewsDTO newsDTO = newsService.selectedNews(newsId);
-        return "index6";
+    public String selectedNews(@RequestParam("newsId") int newsId, ModelMap modelMap) {
+        NewsDTO newsDTO = newsService.selectedNews(newsId);
+        CommentDTO commentDTO = new CommentDTO();
+        modelMap.addAttribute("comment", commentDTO);
+        modelMap.addAttribute("news", newsDTO);
+        return "selectedNews";
     }
 
     @GetMapping("/addNewsPage")
-    public String addNewsPage () {
+    public String addNewsPage() {
         return "addNews";
     }
 
     @GetMapping("/addNews")
-    public String addNews (@ModelAttribute("news") NewsDTO newsDTO) {
-
+    public String addNews(@ModelAttribute("news") NewsDTO newsDTO) {
         newsService.addNews(newsDTO);
-        return "addNews";
+        return "redirect:/";
+    }
+
+    @GetMapping("/editNewsPage")
+    public ModelAndView editNewsPage(@RequestParam("newsId") int newsId) {
+        return new ModelAndView("editNews", "news", newsService.selectedNews(newsId));
+    }
+
+    @PostMapping("/editNews")
+    public String editNews(@ModelAttribute("news") NewsDTO newsDTO) {
+        int newsId = newsDTO.getNewsId();
+        newsService.editNews(newsDTO, newsId);
+        return "redirect:/selectedNews?newsId=" + newsId;
+    }
+
+    @PostMapping("/addComment/{newsId}")
+    public String addComment(@PathVariable(value = "newsId") int newsId, @ModelAttribute("comment") CommentDTO commentDTO) {
+        newsService.addComment(newsId, commentDTO);
+        return "redirect:/selectedNews?newsId=" + newsId;
+    }
+
+    @GetMapping("/deleteNews")
+    public String deleteNews(@RequestParam(required = false, name = "checkedNews") String[] checkedNews) {
+        if (checkedNews != null) {
+            for (String checkboxValue : checkedNews) {
+                System.out.println(checkboxValue);
+                newsService.deleteNews(Integer.parseInt(checkboxValue));
+            }
+        }
+        return "redirect:/";
+    }
+
+    @GetMapping("/deleteComment/{newsId}")
+    public String deleteComment(@RequestParam(required = false, name = "checkedComments") String[] checkedComments,
+                                @PathVariable(value = "newsId") int newsId) {
+        System.out.println("newsIDDDDDDDDD      " + newsId);
+        if (checkedComments != null) {
+            for (String checkboxValue : checkedComments) {
+                System.out.println(checkboxValue);
+                newsService.deleteComment(newsId, Integer.parseInt(checkboxValue));
+            }
+        }
+        return "redirect:/selectedNews?newsId=" + newsId;
     }
 
 
-
-//    public ActionForward deleteNews(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//        NewsForm newsForm = (NewsForm) form;
-//        if (newsForm.getCheckboxValue() != null) {
-//            for (String checkboxValue : newsForm.getCheckboxValue()) {
-//                newsService.deleteNews(Integer.parseInt(checkboxValue));
-//            }
-//        }
-//        return mapping.findForward("success");
-//    }
-//
-//    public ActionForward deleteComment(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//        NewsForm newsForm = (NewsForm) form;
-//        int newsId = Integer.parseInt(request.getParameter("newsId"));
-//
-//        if (newsForm.getCheckboxValue() != null) {
-//            for (String checkboxValue : newsForm.getCheckboxValue()) {
-//                newsService.deleteComment(newsId, Integer.parseInt(checkboxValue));
-//            }
-//        }
-//        return mapping.findForward("success");
-//    }
-//
-//    public ActionForward addComment(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//        CommentForm commentForm = (CommentForm) form;
-//        int newsId = Integer.parseInt(request.getParameter("newsId"));
-//
-//        commentForm.setDateCreated(new Date());
-//        commentForm.setNewsId(newsId);
-//        newsService.createComment(newsId, commentConverterImpl.formToDTO(commentForm));
-//
-//        return mapping.findForward("success");
-//    }
-//
-//
-//    public ActionForward moveToEditPage(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//        int newsId = Integer.parseInt(request.getParameter("newsId"));
-//        NewsForm newsForm = (NewsForm) form;
-//
-//        newsConverterImpl.DTOToForm(newsService.selectedNews(newsId), newsForm);
-//
-//        return mapping.findForward("success");
-//    }
-//
-//    public ActionForward editNews(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//        NewsForm newsForm = (NewsForm) form;
-//        String newsId = request.getParameter("newsId");
-//
-//        NewsDTO newsDTO = newsConverterImpl.formToDTO(newsForm);
-//        newsService.editNews(newsDTO, newsId);
-//
-//        return mapping.findForward("success");
-//    }
-//
-//    public ActionForward addNews(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//        NewsForm newsForm = (NewsForm) form;
-//
-//        NewsDTO newsDTO = newsConverterImpl.formToDTO(newsForm);
-//        newsService.addNews(newsDTO);
-//
-//        return mapping.findForward("success");
-//    }
-
-
+}

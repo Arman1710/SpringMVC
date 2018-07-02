@@ -36,7 +36,7 @@
 
 <main role="main">
     <div class="container">
-        <form:form modelAttribute="news" action="addNews" method="post">
+        <form:form modelAttribute="news" action="addNews" method="get">
             <table border="0">
                 <thead>
                 <tr>
@@ -45,17 +45,17 @@
                 <tbody>
                 <tr>
                     <br>
-                    <textarea name="title" id="title" cols="30" rows="1" style="word-wrap: break-word"  class="form-control mr-sm-2" type="textarea"
+                    <textarea name="title" cols="30" rows="1" style="word-wrap: break-word"  class="form-control mr-sm-2"
                               placeholder="<spring:message code="title"/>" aria-label="Search"></textarea>
                 </tr>
                 <tr>
                     <br>
-                    <textarea name="brief" id="brief" cols="30" rows="3" style="word-wrap: break-word"  class="form-control mr-sm-2" type="textarea"
+                    <textarea name="brief" cols="30" rows="3" style="word-wrap: break-word"  class="form-control mr-sm-2"
                               placeholder="<spring:message code="brief"/>" aria-label="Search"></textarea>
                 </tr>
                 <tr>
                     <br>
-                    <textarea name="content" id="content" cols="30" rows="10" style="word-wrap: break-word" class="form-control mr-sm-2" type="textarea"
+                    <textarea name="content" cols="30" rows="10" style="word-wrap: break-word" class="form-control mr-sm-2"
                               placeholder="<spring:message code="content"/>" aria-label="Search"></textarea>
                 </tr>
                 <tr>

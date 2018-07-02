@@ -13,7 +13,6 @@ public class NewsDTO {
     private String error;
     private int newsId;
     private List<CommentDTO> commentList = new ArrayList<>();
-    private String [] checkboxValue;
 
     public String getTitle() {
         return title;
@@ -56,14 +55,6 @@ public class NewsDTO {
     }
 
 
-    public String[] getCheckboxValue() {
-        return checkboxValue;
-    }
-
-    public void setCheckboxValue(String[] checkboxValue) {
-        this.checkboxValue = checkboxValue;
-    }
-
     public List<NewsDTO> getNewsList() {
         return newsList;
     }
@@ -80,17 +71,5 @@ public class NewsDTO {
         this.commentList = commentList;
     }
 
-    @Override
-    public String toString() {
-        return "NewsDTO{" +
-                "newsList=" + newsList +
-                ", brief='" + brief + '\'' +
-                ", content='" + content + '\'' +
-                ", error='" + error + '\'' +
-                ", newsId=" + newsId +
-                ", commentList=" + commentList +
-                ", checkboxValue=" + (checkboxValue == null ? null : Arrays.asList(checkboxValue)) +
-                '}';
-    }
 }
 

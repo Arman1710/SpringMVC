@@ -5,6 +5,7 @@ import epam.news.model.entity.News;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -23,7 +24,9 @@ public class NewsDAOImpl implements NewsDAO {
         session.beginTransaction();
 
 
-        List newsList = session.createCriteria(News.class).list();
+        Criteria criteria = session.createCriteria(News.class);
+        criteria.addOrder(Order.desc("newsId"));
+        List<News> newsList = criteria.list();
 
         session.getTransaction().commit();
         session.close();

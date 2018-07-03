@@ -15,7 +15,7 @@ public class News extends Basic {
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
     @Column(name = "newsId", nullable = false, updatable = false)
-    private int newsId;
+    private Long newsId;
 
     @Column(nullable = false)
     private String title;
@@ -31,11 +31,11 @@ public class News extends Basic {
     private List<Comment> commentList = new ArrayList<>();
 
 
-    public int getNewsId() {
+    public Long getNewsId() {
         return newsId;
     }
 
-    public void setNewsId(int newsId) {
+    public void setNewsId(Long newsId) {
         this.newsId = newsId;
     }
 

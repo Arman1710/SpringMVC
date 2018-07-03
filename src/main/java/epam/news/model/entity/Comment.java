@@ -13,7 +13,7 @@ public class Comment extends Basic {
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
     @Column (name = "commentId", nullable = false, updatable = false)
-    private int commentId;
+    private Long commentId;
 
     @Column (nullable = false)
     private String author;
@@ -25,17 +25,17 @@ public class Comment extends Basic {
     private Date dateCreated;
 
     @Column (nullable = false)
-    private int newsId;
+    private Long newsId;
 
     @ManyToOne
     @JoinColumn (name = "newsId", insertable = false, updatable = false)
     private News news;
 
-    public int getCommentId() {
+    public Long getCommentId() {
         return commentId;
     }
 
-    public void setCommentId(int commentId) {
+    public void setCommentId(Long commentId) {
         this.commentId = commentId;
     }
 
@@ -63,11 +63,11 @@ public class Comment extends Basic {
         this.dateCreated = dateCreated;
     }
 
-    public int getNewsId() {
+    public Long getNewsId() {
         return newsId;
     }
 
-    public void setNewsId(int newsId) {
+    public void setNewsId(Long newsId) {
         this.newsId = newsId;
     }
 

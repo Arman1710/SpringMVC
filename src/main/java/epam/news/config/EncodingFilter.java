@@ -1,4 +1,4 @@
-package epam.news.util;
+package epam.news.config;
 
 import javax.servlet.*;
 import java.io.IOException;

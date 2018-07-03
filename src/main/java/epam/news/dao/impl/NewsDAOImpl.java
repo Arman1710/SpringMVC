@@ -35,7 +35,7 @@ public class NewsDAOImpl implements NewsDAO {
     }
 
     @Override
-    public void saveOrUpdate(News news) {
+    public void update(News news) {
         Session session = sessionFactory.openSession();
 
         session.beginTransaction();
@@ -70,7 +70,7 @@ public class NewsDAOImpl implements NewsDAO {
 
 
     @Override
-    public News findById(int newsId) {
+    public News findById(Long newsId) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 

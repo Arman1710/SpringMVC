@@ -30,7 +30,7 @@ public class NewsService {
 
     }
 
-    public NewsDTO selectedNews(int newsId) {
+    public NewsDTO selectedNews(Long newsId) {
         LOGGER.info("selected news :" + newsId);
         NewsDTO newsDTO = newsConverterImpl.entityToDTO(newsDAOImpl.findById(newsId));
         LOGGER.trace("Show selected news");
@@ -39,13 +39,13 @@ public class NewsService {
     }
 
 
-    public void editNews(NewsDTO newsDTO, int newsId) {
+    public void editNews(NewsDTO newsDTO, Long newsId) {
         LOGGER.info("Updating news :" + newsId);
         News news = newsDAOImpl.findById(newsId);
         news.setContent(newsDTO.getContent());
         news.setBrief(newsDTO.getBrief());
         news.setTitle(newsDTO.getTitle());
-        newsDAOImpl.saveOrUpdate(news);
+        newsDAOImpl.update(news);
         LOGGER.info("News :" + newsId + " is updated");
     }
 
@@ -55,18 +55,18 @@ public class NewsService {
         LOGGER.info("News :" + news.getTitle() + "is created");
     }
 
-    public void addComment(int newsId, CommentDTO commentDTO) {
+    public void addComment(Long newsId, CommentDTO commentDTO) {
         LOGGER.info("Creating comment :" + newsId);
         commentDTO.setDateCreated(new Date());
         Comment comment = commentImpl.DTOToEntity(commentDTO);
         News news = newsDAOImpl.findById(newsId);
         news.getCommentList().add(comment);
-        newsDAOImpl.saveOrUpdate(news);
+        newsDAOImpl.update(news);
         LOGGER.info("Comments :" + news + "is created");
     }
 
 
-    public void deleteNews(int newsId) {
+    public void deleteNews(Long newsId) {
         LOGGER.info("delete news :" + newsId);
 
         newsDAOImpl.delete(newsDAOImpl.findById(newsId));
@@ -74,7 +74,7 @@ public class NewsService {
         LOGGER.info("News :" + newsId + " is deleted");
     }
 
-    public void deleteComment(final int newsId, final int commentId) {
+    public void deleteComment(final Long newsId, final Long commentId) {
         LOGGER.info("delete news :" + commentId);
         final News news = newsDAOImpl.findById(newsId);
         final Iterator<Comment> itr = news.getCommentList().iterator();
@@ -85,7 +85,7 @@ public class NewsService {
                 itr.remove();
             }
         }
-        newsDAOImpl.saveOrUpdate(news);
+        newsDAOImpl.update(news);
         LOGGER.info("News :" + commentId + " is deleted");
     }
 

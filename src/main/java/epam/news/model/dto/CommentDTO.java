@@ -6,8 +6,8 @@ public class CommentDTO {
     private String author;
     private String description;
     private Date dateCreated;
-    private int newsId;
-    private int commentId;
+    private Long newsId;
+    private Long commentId;
 
     public String getAuthor() {
         return author;
@@ -33,19 +33,19 @@ public class CommentDTO {
         this.dateCreated = dateCreated;
     }
 
-    public int getNewsId() {
+    public Long getNewsId() {
         return newsId;
     }
 
-    public void setNewsId(int newsId) {
+    public void setNewsId(Long newsId) {
         this.newsId = newsId;
     }
 
-    public int getCommentId() {
+    public Long getCommentId() {
         return commentId;
     }
 
-    public void setCommentId(int commentId) {
+    public void setCommentId(Long commentId) {
         this.commentId = commentId;
     }
 

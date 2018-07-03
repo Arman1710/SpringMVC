@@ -11,7 +11,7 @@ public class NewsDTO {
     private String brief;
     private String content;
     private String error;
-    private int newsId;
+    private Long newsId;
     private List<CommentDTO> commentList = new ArrayList<>();
 
     public String getTitle() {
@@ -46,11 +46,11 @@ public class NewsDTO {
         this.error = error;
     }
 
-    public int getNewsId() {
+    public Long getNewsId() {
         return newsId;
     }
 
-    public void setNewsId(int newsId) {
+    public void setNewsId(Long newsId) {
         this.newsId = newsId;
     }
 

@@ -1,4 +1,4 @@
-package epam.news.util;
+package epam.news.config;
 
 
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -10,7 +10,7 @@ import javax.servlet.Filter;
 public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] {AppConfig.class};
+        return new Class[] {AppConfig.class, SecurityConfig.class} ;
     }
 
     @Override
@@ -30,6 +30,7 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
         characterEncodingFilter.setEncoding("UTF-8");
         return new Filter[]{characterEncodingFilter};
     }
+
 
 
 }

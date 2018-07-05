@@ -24,12 +24,21 @@
                 <li class="nav-item">
                     <a class="nav-link" href="?lang=en"><spring:message code="locale.english"/></a>
                 </li>
+                <li class="float-right">
+                    <a class="nav-link" href="/"><spring:message code="logIn"/></a>
+                </li>
+                <form:form id="logoutForm" method="POST" action="${contextPath}/logout">
+
+                </form:form>
             </ul>
         </div>
     </nav>
 </header>
 
 <main role="main">
+
+    <h4> user is : ${user.username} role is ${user.role}</h4>
+
     <form:form action="deleteNews" method="get">
         <div class="jumbotron">
             <div class="container">

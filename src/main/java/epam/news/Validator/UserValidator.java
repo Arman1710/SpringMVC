@@ -1,12 +1,14 @@
 package epam.news.Validator;
 
+import epam.news.model.entity.User;
 import epam.news.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+@Component
 public class UserValidator implements Validator {
 
     @Autowired
@@ -35,8 +37,8 @@ public class UserValidator implements Validator {
             errors.rejectValue("password", "Size.userForm.password");
         }
 
-        if (!user.getConfirmPassword().equals(user.getPassword())) {
-            errors.rejectValue("confirmPassword", "Different.userForm.password");
-        }
+//        if (!user.getConfirmPassword().equals(user.getPassword())) {
+//            errors.rejectValue("confirmPassword", "Different.userForm.password");
+//        }
     }
 }

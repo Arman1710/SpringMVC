@@ -1,6 +1,5 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -9,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title> <spring:message code="logIn"/></title>
+    <title><spring:message code="registration"/></title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
           integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
@@ -19,39 +18,33 @@
 </head>
 
 
-
 <body class="text-center">
-<%--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
-<form:form method="POST" action="/login" class="form-signin">
 
-    <c:if test="${logout}">
-    <div class="alert alert-info" role="alert">
-        <spring:message code="successLogout"/>
-    </div>
-    </c:if>
-
-    <c:if test="${error}">
-    <div class="alert alert-danger" role="alert">
-        <spring:message code="invalidUsernameOrPassword"/>
-    </div>
-    </c:if>
+<form:form modelAttribute="user" method="POST" action="/registration" class="form-signin">
     <h1 class="h3 mb-3 font-weight-normal"><spring:message code="logIn"/></h1>
-    <div class="form-group">
-        <label for="formGroupExampleInput"><spring:message code="username"/></label>
-        <input type="text" name="username" class="form-control" id="formGroupExampleInput">
-    </div>
-    <div class="form-group">
-        <label for="formGroupExampleInput2"><spring:message code="password"/></label>
-        <input type="password" name="password" class="form-control" id="formGroupExampleInput2">
-    </div>
+    <spring:bind path="username">
+        <input name="username" type="text" class="form-control" placeholder="<spring:message code="username"/>" required
+               autofocus>
+        <div style="color:red">
+        <form:errors path="username"/>
+        </div>
+    </spring:bind>
 
-    <button class="btn btn-lg btn-primary btn-block" type="submit"><spring:message code="logIn"/></button>
-    <br>
-    <h4 class="text-center"><a href="/registrationPage"><spring:message code="registration"/></a></h4>
+    <spring:bind path="password">
+        <input name="password" type="password" class="form-control" placeholder="<spring:message code="password"/>"
+               required>
+        <div style="color:red">
+            <form:errors path="password"/>
+        </div>
+
+    </spring:bind>
+
+    <input name="confirmPassword" type="password"  class="form-control" placeholder="<spring:message code="confirmPassword"/>" required>
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit"><spring:message code="registration"/></button>
 
     <p class="mt-5 mb-3 text-muted">&copy;2018</p>
 </form:form>
-
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

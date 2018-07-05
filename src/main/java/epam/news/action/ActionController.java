@@ -2,42 +2,64 @@ package epam.news.action;
 
 import epam.news.model.dto.CommentDTO;
 import epam.news.model.dto.NewsDTO;
+import epam.news.model.dto.UserDTO;
 import epam.news.model.entity.News;
+import epam.news.model.entity.User;
 import epam.news.services.NewsService;
+import epam.news.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
 @Controller
-public class NewsController {
+public class ActionController {
 
     @Autowired
     private NewsService newsService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/")
-    public String welcome(Model model) {
+    public String welcome() {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String login(Model model, String error, String logout) {
-        if (error != null) {
-            model.addAttribute("error", "Username or password is incorrect.");
-        }
-
-        return "index";
+    @GetMapping("/login")
+    public String login(@RequestParam(value = "error", required = false) String error,
+                        @RequestParam(value = "logout", required = false) String logout, Model model) {
+            model.addAttribute("error", error != null);
+            model.addAttribute("logout", logout != null);
+        return "login";
     }
 
-    @GetMapping("/index")
+    @GetMapping("/registrationPage")
+    public String registration(ModelMap modelMap) {
+     modelMap.addAttribute("user", new User());
+        return "registration";
+    }
+
+    @PostMapping("/registration")
+    public String registration(@ModelAttribute("user") UserDTO userDTO, BindingResult bindingResult) {
+        return userService.createUser(userDTO, bindingResult);
+    }
+
+
+    @RequestMapping(value = "/main", method = {RequestMethod.GET, RequestMethod.POST})
     public String showAllNews(ModelMap modelMap) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
         List<News> newsList = newsService.showAllNews();
         modelMap.addAttribute("newsList", newsList);
-        return "index";
+//        modelMap.addAttribute("username", user.getUsername());
+        return "main";
     }
 
     @GetMapping("/selectedNews")
@@ -65,7 +87,7 @@ public class NewsController {
         return new ModelAndView("editNews", "news", newsService.selectedNews(newsId));
     }
 
-    @PutMapping("/editNews")
+    @PostMapping("/editNews")
     public String editNews(@ModelAttribute("news") NewsDTO newsDTO) {
         Long newsId = newsDTO.getNewsId();
         newsService.editNews(newsDTO, newsId);
@@ -82,7 +104,6 @@ public class NewsController {
     public String deleteNews(@RequestParam(required = false, name = "checkedNews") String[] checkedNews) {
         if (checkedNews != null) {
             for (String checkboxValue : checkedNews) {
-                System.out.println(checkboxValue);
                 newsService.deleteNews(Long.valueOf(checkboxValue));
             }
         }
@@ -95,7 +116,6 @@ public class NewsController {
         System.out.println("newsIDDDDDDDDD      " + newsId);
         if (checkedComments != null) {
             for (String checkboxValue : checkedComments) {
-                System.out.println(checkboxValue);
                 newsService.deleteComment(newsId, Long.valueOf(checkboxValue));
             }
         }

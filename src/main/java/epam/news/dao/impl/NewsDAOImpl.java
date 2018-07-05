@@ -17,7 +17,6 @@ public class NewsDAOImpl implements NewsDAO {
     @Autowired
     private SessionFactory sessionFactory;
 
-
     @Override
     public List<News> read() {
         Session session = sessionFactory.openSession();

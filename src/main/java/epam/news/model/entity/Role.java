@@ -20,6 +20,9 @@ public class Role extends Basic {
     @OneToOne(mappedBy = "role")
     private User user;
 
+//    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<User> user = new ArrayList<>();
+
 
     public Long getRoleId() {
         return roleId;
@@ -35,5 +38,14 @@ public class Role extends Basic {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "roleId=" + roleId +
+                ", roleName='" + roleName + '\'' +
+                ", user=" + user +
+                '}';
     }
 }

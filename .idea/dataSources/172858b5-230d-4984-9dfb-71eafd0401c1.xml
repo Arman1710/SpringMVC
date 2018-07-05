@@ -6,9 +6,9 @@
     </root>
     <schema id="2" parent="1" name="ARMAN">
       <ObjectId>48</ObjectId>
-      <IntrospectionTimestamp>2018-07-03.18:26:32</IntrospectionTimestamp>
+      <IntrospectionTimestamp>2018-07-05.16:34:29</IntrospectionTimestamp>
       <CreatedTimestamp>2018-07-03.18:26:20</CreatedTimestamp>
-      <ModifiedTimestamp>2018-07-03.18:26:21</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-07-05.16:34:23</ModifiedTimestamp>
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
@@ -84,7 +84,7 @@
     <table id="23" parent="2" name="USERS">
       <ObjectId>20790</ObjectId>
       <CreatedTimestamp>2018-07-03.18:26:21</CreatedTimestamp>
-      <ModifiedTimestamp>2018-07-03.18:26:21</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-07-05.16:34:23</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
     <column id="24" parent="20" name="COMMENTID">
@@ -219,6 +219,7 @@
     <column id="45" parent="23" name="ROLEID">
       <Position>4</Position>
       <DataType>NUMBER(19 digit)|0s</DataType>
+      <DefaultExpression>2</DefaultExpression>
     </column>
     <index id="46" parent="23" name="SYS_C007360">
       <ObjectId>20791</ObjectId>
@@ -238,7 +239,7 @@
       <Primary>1</Primary>
     </key>
     <foreign-key id="48" parent="23" name="FKH1QETLRSRO6PU1ACB9ICI59P2">
-      <ModifiedTimestamp>2018-07-03.18:26:21</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-07-05.16:34:23</ModifiedTimestamp>
       <ColNames>ROLEID</ColNames>
       <RefSchemaName>ARMAN</RefSchemaName>
       <RefTableName>ROLE</RefTableName>

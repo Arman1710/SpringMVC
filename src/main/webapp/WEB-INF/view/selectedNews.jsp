@@ -22,7 +22,7 @@
             <div class="collapse navbar-collapse" id="navbarsExampleDefault">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/"><spring:message code="mainPage"/></a>
+                        <a class="nav-link" href="/main"><spring:message code="mainPage"/></a>
                     </li>
                 </ul>
             </div>

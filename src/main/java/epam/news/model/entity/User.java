@@ -23,10 +23,13 @@ public class User extends Basic{
     @Transient
     private String confirmPassword;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="roleId")
     private Role role;
 
+//    @ManyToOne
+//    @JoinColumn (name = "roleId", insertable = false, updatable = false)
+//    private Role role;
 
     public Long getUserId() {
         return userId;
@@ -66,5 +69,16 @@ public class User extends Basic{
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", confirmPassword='" + confirmPassword + '\'' +
+                ", role=" + role +
+                '}';
     }
 }

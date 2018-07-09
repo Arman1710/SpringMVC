@@ -80,4 +80,5 @@ public class NewsDAOImpl implements NewsDAO {
 
         return news;
     }
+
 }

@@ -36,7 +36,7 @@
 
 <main role="main">
     <div class="container">
-        <form:form modelAttribute="news" action="addNews" method="get">
+        <form:form modelAttribute="news" action="admin/addNews" method="get">
             <table border="0">
                 <thead>
                 <tr>

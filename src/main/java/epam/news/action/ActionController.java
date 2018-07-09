@@ -1,13 +1,16 @@
 package epam.news.action;
 
+import epam.news.Validator.UserValidator;
 import epam.news.model.dto.CommentDTO;
 import epam.news.model.dto.NewsDTO;
 import epam.news.model.dto.UserDTO;
 import epam.news.model.entity.News;
 import epam.news.model.entity.User;
 import epam.news.services.NewsService;
+import epam.news.services.SecurityService;
 import epam.news.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -27,10 +31,21 @@ public class ActionController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserValidator userValidator;
+
+    @Autowired
+    private SecurityService securityService;
+
     @GetMapping("/")
     public String welcome() {
         return "login";
     }
+
+//    @GetMapping
+//    public String logout(ModelMap modelMap) {
+//        modelMap
+//    }
 
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error,
@@ -48,46 +63,47 @@ public class ActionController {
 
     @PostMapping("/registration")
     public String registration(@ModelAttribute("user") UserDTO userDTO, BindingResult bindingResult) {
-        return userService.createUser(userDTO, bindingResult);
+        userValidator.validate(userDTO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "registration";
+        }
+        userService.createUser(userDTO);
+        return "main";
     }
 
 
     @RequestMapping(value = "/main", method = {RequestMethod.GET, RequestMethod.POST})
     public String showAllNews(ModelMap modelMap) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
         List<News> newsList = newsService.showAllNews();
         modelMap.addAttribute("newsList", newsList);
-//        modelMap.addAttribute("username", user.getUsername());
         return "main";
     }
 
     @GetMapping("/selectedNews")
     public String selectedNews(@RequestParam("newsId") Long newsId, ModelMap modelMap) {
         NewsDTO newsDTO = newsService.selectedNews(newsId);
-        CommentDTO commentDTO = new CommentDTO();
-        modelMap.addAttribute("comment", commentDTO);
+        modelMap.addAttribute("comment", new CommentDTO());
         modelMap.addAttribute("news", newsDTO);
         return "selectedNews";
     }
 
-    @GetMapping("/addNewsPage")
+    @GetMapping("/admin/addNewsPage")
     public String addNewsPage() {
         return "addNews";
     }
 
-    @GetMapping("/addNews")
+    @GetMapping("/admin/addNews")
     public String addNews(@ModelAttribute("news") NewsDTO newsDTO) {
         newsService.addNews(newsDTO);
-        return "redirect:/";
+        return "main";
     }
 
-    @GetMapping("/editNewsPage")
+    @GetMapping("/admin/editNewsPage")
     public ModelAndView editNewsPage(@RequestParam("newsId") Long newsId) {
         return new ModelAndView("editNews", "news", newsService.selectedNews(newsId));
     }
 
-    @PostMapping("/editNews")
+    @PostMapping("/admin/editNews")
     public String editNews(@ModelAttribute("news") NewsDTO newsDTO) {
         Long newsId = newsDTO.getNewsId();
         newsService.editNews(newsDTO, newsId);
@@ -100,7 +116,7 @@ public class ActionController {
         return "redirect:/selectedNews?newsId=" + newsId;
     }
 
-    @GetMapping("/deleteNews")
+    @GetMapping("/admin/deleteNews")
     public String deleteNews(@RequestParam(required = false, name = "checkedNews") String[] checkedNews) {
         if (checkedNews != null) {
             for (String checkboxValue : checkedNews) {
@@ -110,7 +126,7 @@ public class ActionController {
         return "redirect:/";
     }
 
-    @GetMapping("/deleteComment/{newsId}")
+    @GetMapping("/admin/deleteComment/{newsId}")
     public String deleteComment(@RequestParam(required = false, name = "checkedComments") String[] checkedComments,
                                 @PathVariable(value = "newsId") Long newsId) {
         System.out.println("newsIDDDDDDDDD      " + newsId);

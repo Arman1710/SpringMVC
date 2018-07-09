@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -51,7 +52,8 @@
                             <p class="card-text">${news.content}</p>
                         </div>
                     </div>
-                    <p class="float-right"><a class="btn btn-primary btn-md" href="/editNewsPage?newsId=${news.newsId}"
+                    <p class="float-right"><a class="btn btn-primary btn-md"
+                                              href="/admin/editNewsPage?newsId=${news.newsId}"
                                               role="button"><spring:message code="editNews"/></a>
                 </div>
             </div>
@@ -102,7 +104,7 @@
         </html:messages>
 
         <div class="container">
-            <form:form action="/deleteComment/${news.newsId}" method="get">
+            <form:form action="admin//deleteComment/${news.newsId}" method="get">
             <c:forEach items="${news.commentList}" var="comment">
             <div class="comments">
                 <div class="row">
@@ -128,11 +130,14 @@
 
                 <hr>
                 </c:forEach>
-                <c:if test="${not empty news.commentList}">
-                    <div class="float-right">
-                        <button type="submit" class="btn btn-danger btn-md"><spring:message code="comment.delete"/></button>
-                    </div>
-                </c:if>
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <c:if test="${not empty news.commentList}">
+                        <div class="float-right">
+                            <button type="submit" class="btn btn-danger btn-md"><spring:message
+                                    code="comment.delete"/></button>
+                        </div>
+                    </c:if>
+                </sec:authorize>
                 </form:form>
                 <br>
             </div>

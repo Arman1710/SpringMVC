@@ -3,6 +3,8 @@ package epam.news.model.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -23,7 +25,8 @@ public class User extends Basic{
     @Transient
     private String confirmPassword;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
+    @OneToOne
     @JoinColumn(name="roleId")
     private Role role;
 
@@ -70,6 +73,7 @@ public class User extends Basic{
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
+
 
     @Override
     public String toString() {

@@ -36,7 +36,7 @@
 
 <main role="main">
     <div class="container">
-        <form:form modelAttribute="news" action="editNews" method="post">
+        <form:form modelAttribute="news" action="admin/editNews" method="post">
             <form:hidden path="newsId"/>
             <table border="0">
                 <thead>

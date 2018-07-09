@@ -21,7 +21,6 @@
 
 
 <body class="text-center">
-<%--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
 <form:form method="POST" action="/login" class="form-signin">
 
     <c:if test="${logout}">

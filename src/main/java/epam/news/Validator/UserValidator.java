@@ -1,5 +1,6 @@
 package epam.news.Validator;
 
+import epam.news.model.dto.UserDTO;
 import epam.news.model.entity.User;
 import epam.news.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,29 +17,29 @@ public class UserValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return User.class.equals(aClass);
+        return UserDTO.class.equals(aClass);
     }
 
     @Override
     public void validate(Object o, Errors errors) {
-        User user = (User) o;
+        UserDTO userDTO = (UserDTO) o;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "Required");
-        if (user.getUsername().length() < 8 || user.getUsername().length() > 32) {
+        if (userDTO.getUsername().length() < 8 || userDTO.getUsername().length() > 32) {
             errors.rejectValue("username", "Size.userForm.username");
         }
 
-        if (userService.getUserByUsername(user.getUsername()) != null) {
+        if (userService.getUserByUsername(userDTO.getUsername()) != null) {
             errors.rejectValue("username", "Duplicate.userForm.username");
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "Required");
-        if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
+        if (userDTO.getPassword().length() < 8 || userDTO.getPassword().length() > 32) {
             errors.rejectValue("password", "Size.userForm.password");
         }
 
-//        if (!user.getConfirmPassword().equals(user.getPassword())) {
-//            errors.rejectValue("confirmPassword", "Different.userForm.password");
-//        }
+        if (!userDTO.getConfirmPassword().equals(userDTO.getPassword())) {
+            errors.rejectValue("confirmPassword", "Different.userForm.password");
+        }
     }
 }

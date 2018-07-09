@@ -71,6 +71,7 @@ public class NewsService {
         commentDTO.setDateCreated(new Date());
         Comment comment = commentImpl.DTOToEntity(commentDTO);
         News news = newsDAOImpl.findById(newsId);
+        comment.setNewsId(news.getNewsId());
         news.getCommentList().add(comment);
         newsDAOImpl.update(news);
         LOGGER.info("Comments :" + news + "is created");

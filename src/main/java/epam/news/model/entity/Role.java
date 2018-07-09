@@ -3,6 +3,8 @@ package epam.news.model.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "role")
@@ -17,7 +19,7 @@ public class Role extends Basic {
     @Column(nullable = false)
     private String roleName;
 
-    @OneToOne(mappedBy = "role")
+    @OneToOne(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private User user;
 
 //    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -27,7 +28,8 @@
                 <li class="float-right">
                     <a class="nav-link" href="/"><spring:message code="logIn"/></a>
                 </li>
-                <form:form id="logoutForm" method="POST" action="${contextPath}/logout">
+                <form:form id="logoutForm" method="POST" action="/logout">
+                    <button type="submit" class="btn btn-primary btn-sm"><spring:message code="logOut"/></button>
 
                 </form:form>
             </ul>
@@ -37,9 +39,9 @@
 
 <main role="main">
 
-    <h4> user is : ${user.username} role is ${user.role}</h4>
 
-    <form:form action="deleteNews" method="get">
+
+    <form:form action="admin/deleteNews" method="get">
         <div class="jumbotron">
             <div class="container">
                 <h1 class="display-3"><spring:message code="mainPage"/></h1>
@@ -50,10 +52,12 @@
         <div class="col-1">
             <div class="container">
                 <p class="float-left">
-                    <a class="btn btn-primary btn-md" href="/addNewsPage" role="button"><spring:message
-                            code="addNews"/></a><br>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                        <a class="btn btn-primary btn-md" href="/admin/addNewsPage" role="button"><spring:message
+                                code="addNews"/></a><br>
                         <br>
-                    <a><button type="submit" class="btn btn-primary btn-md"><spring:message code="removeNews"/></button></a>
+                        <a><button type="submit" class="btn btn-primary btn-md"><spring:message code="removeNews"/></button></a>
+                    </sec:authorize>
                 </p>
             </div>
         </div>

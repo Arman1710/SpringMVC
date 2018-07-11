@@ -5,6 +5,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="tagFile" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
@@ -18,17 +19,7 @@
 
 
 <main role="main">
-    <header>
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/main"><spring:message code="mainPage"/></a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+    <tagFile:header/>
 
     <section class="jumbotron text-center">
         <div class="container">
@@ -37,7 +28,6 @@
             </h1>
         </div>
     </section>
-
 
     <div class="album py-5 bg-light">
         <div class="container">
@@ -52,15 +42,18 @@
                             <p class="card-text">${news.content}</p>
                         </div>
                     </div>
-                    <p class="float-right"><a class="btn btn-primary btn-md"
-                                              href="/admin/editNewsPage?newsId=${news.newsId}"
-                                              role="button"><spring:message code="editNews"/></a>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                        <p class="float-right"><a class="btn btn-primary btn-md"
+                                                  href="/admin/editNewsPage?newsId=${news.newsId}"
+                                                  role="button"><spring:message code="editNews"/></a>
+                        </p>
+                    </sec:authorize>
                 </div>
             </div>
         </div>
     </div>
     <div class="container">
-        <form:form modelAttribute="comment" action="addComment/${news.newsId}" method="post">
+        <form:form modelAttribute="comment" action="/addComment/${news.newsId}" method="post">
             <table border="0">
                 <thead>
                 <tr>
@@ -68,16 +61,18 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr></tr>
-                <tr>
-                    <td><spring:message code="comment.Author"/></td>
-                    <td><textarea name="author" cols="100" rows="1" style="word-wrap: break-word"
-                                  class="form-control mr-sm-2" aria-label="Search"></textarea></td>
-                </tr>
                 <tr>
                     <td><spring:message code="comment.Description"/></td>
-                    <td><textarea name="description" cols="100" rows="5" style="word-wrap: break-word"
-                                  class="form-control mr-sm-2" aria-label="Search"></textarea></td>
+                    <spring:bind path="description">
+                    <td>
+                        <textarea name="description" cols="100" rows="5" style="word-wrap: break-word"
+                                  class="form-control mr-sm-2"  required>
+                    </textarea>
+                        <div style="color:red">
+                            <form:errors path="description"/>
+                        </div>
+                        </spring:bind>
+                    </td>
                 </tr>
                 <tr>
                     <td></td>
@@ -104,7 +99,7 @@
         </html:messages>
 
         <div class="container">
-            <form:form action="admin//deleteComment/${news.newsId}" method="get">
+            <form:form action="/admin/deleteComment/${news.newsId}" method="get">
             <c:forEach items="${news.commentList}" var="comment">
             <div class="comments">
                 <div class="row">
@@ -123,9 +118,11 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="col-md-1">
-                        <input type="checkbox" name="checkedComments" value="${comment.commentId}">
-                    </div>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                        <div class="col-md-1">
+                            <input type="checkbox" name="checkedComments" value="${comment.commentId}">
+                        </div>
+                    </sec:authorize>
                 </div>
 
                 <hr>

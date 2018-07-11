@@ -1,5 +1,7 @@
 package epam.news.action;
 
+import epam.news.Validator.CommentsValidator;
+import epam.news.Validator.NewsValidator;
 import epam.news.Validator.UserValidator;
 import epam.news.model.dto.CommentDTO;
 import epam.news.model.dto.NewsDTO;
@@ -35,17 +37,18 @@ public class ActionController {
     private UserValidator userValidator;
 
     @Autowired
+    private NewsValidator newsValidator;
+
+    @Autowired
+    private CommentsValidator commentsValidator;
+
+    @Autowired
     private SecurityService securityService;
 
     @GetMapping("/")
     public String welcome() {
         return "login";
     }
-
-//    @GetMapping
-//    public String logout(ModelMap modelMap) {
-//        modelMap
-//    }
 
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error,
@@ -68,6 +71,7 @@ public class ActionController {
             return "registration";
         }
         userService.createUser(userDTO);
+        securityService.autoLogin(userDTO.getUsername(), userDTO.getConfirmPassword());
         return "main";
     }
 
@@ -82,20 +86,26 @@ public class ActionController {
     @GetMapping("/selectedNews")
     public String selectedNews(@RequestParam("newsId") Long newsId, ModelMap modelMap) {
         NewsDTO newsDTO = newsService.selectedNews(newsId);
+
         modelMap.addAttribute("comment", new CommentDTO());
         modelMap.addAttribute("news", newsDTO);
         return "selectedNews";
     }
 
     @GetMapping("/admin/addNewsPage")
-    public String addNewsPage() {
+    public String addNewsPage(ModelMap modelMap) {
+        modelMap.addAttribute("news", new News());
         return "addNews";
     }
 
     @GetMapping("/admin/addNews")
-    public String addNews(@ModelAttribute("news") NewsDTO newsDTO) {
+    public String addNews(@ModelAttribute("news") NewsDTO newsDTO, BindingResult bindingResult) {
+        newsValidator.validate(newsDTO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "addNews";
+        }
         newsService.addNews(newsDTO);
-        return "main";
+        return "redirect:/main";
     }
 
     @GetMapping("/admin/editNewsPage")
@@ -104,14 +114,22 @@ public class ActionController {
     }
 
     @PostMapping("/admin/editNews")
-    public String editNews(@ModelAttribute("news") NewsDTO newsDTO) {
+    public String editNews(@ModelAttribute("news") NewsDTO newsDTO, BindingResult bindingResult) {
+        newsValidator.validate(newsDTO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "editNews";
+        }
         Long newsId = newsDTO.getNewsId();
         newsService.editNews(newsDTO, newsId);
         return "redirect:/selectedNews?newsId=" + newsId;
     }
 
     @PostMapping("/addComment/{newsId}")
-    public String addComment(@PathVariable(value = "newsId") Long newsId, @ModelAttribute("comment") CommentDTO commentDTO) {
+    public String addComment(@PathVariable(value = "newsId") Long newsId, @ModelAttribute("comment") CommentDTO commentDTO, BindingResult bindingResult) {
+        commentsValidator.validate(commentDTO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "selectedNews";
+        }
         newsService.addComment(newsId, commentDTO);
         return "redirect:/selectedNews?newsId=" + newsId;
     }
@@ -123,7 +141,7 @@ public class ActionController {
                 newsService.deleteNews(Long.valueOf(checkboxValue));
             }
         }
-        return "redirect:/";
+        return "redirect:/main";
     }
 
     @GetMapping("/admin/deleteComment/{newsId}")

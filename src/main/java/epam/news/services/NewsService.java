@@ -13,6 +13,8 @@ import epam.news.model.entity.News;
 import epam.news.model.entity.User;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +38,7 @@ public class NewsService {
 
 
     public List<News> showAllNews() {
-        LOGGER.trace("show all news");
+        LOGGER.info("show all news");
         return newsDAOImpl.read();
 
     }
@@ -44,7 +46,6 @@ public class NewsService {
     public NewsDTO selectedNews(Long newsId) {
         LOGGER.info("selected news :" + newsId);
         NewsDTO newsDTO = newsConverterImpl.entityToDTO(newsDAOImpl.findById(newsId));
-        LOGGER.trace("Show selected news");
         LOGGER.info("News :" + newsId + " is selected");
         return newsDTO;
     }
@@ -68,10 +69,15 @@ public class NewsService {
 
     public void addComment(Long newsId, CommentDTO commentDTO) {
         LOGGER.info("Creating comment :" + newsId);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
         commentDTO.setDateCreated(new Date());
         Comment comment = commentImpl.DTOToEntity(commentDTO);
+
         News news = newsDAOImpl.findById(newsId);
         comment.setNewsId(news.getNewsId());
+        comment.setAuthor(auth.getName());
+
         news.getCommentList().add(comment);
         newsDAOImpl.update(news);
         LOGGER.info("Comments :" + news + "is created");

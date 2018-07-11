@@ -6,6 +6,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
+
 <html>
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
@@ -13,18 +14,7 @@
     <title><spring:message code="addNews"/></title>
 </head>
 <body>
-<header>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/main"><spring:message code="mainPage"/></a>
-                </li>
-
-            </ul>
-        </div>
-    </nav>
-</header>
+<tagFile:header/>
 
 <section class="jumbotron text-center">
     <div class="container">
@@ -36,7 +26,7 @@
 
 <main role="main">
     <div class="container">
-        <form:form modelAttribute="news" action="admin/addNews" method="get">
+        <form:form modelAttribute="news" action="/admin/addNews" method="get">
             <table border="0">
                 <thead>
                 <tr>
@@ -45,18 +35,40 @@
                 <tbody>
                 <tr>
                     <br>
-                    <textarea name="title" cols="30" rows="1" style="word-wrap: break-word"  class="form-control mr-sm-2"
-                              placeholder="<spring:message code="title"/>" aria-label="Search"></textarea>
+                    <spring:bind path="title">
+                    <textarea name="title" cols="30" rows="1" style="word-wrap: break-word"
+                              class="form-control mr-sm-2"
+                              placeholder="<spring:message code="title"/>" required>
+                    </textarea>
+
+                    <div style="color:red">
+                        <form:errors path="title"/>
+                    </div>
+                    </spring:bind>
                 </tr>
                 <tr>
                     <br>
-                    <textarea name="brief" cols="30" rows="3" style="word-wrap: break-word"  class="form-control mr-sm-2"
-                              placeholder="<spring:message code="brief"/>" aria-label="Search"></textarea>
+                    <spring:bind path="brief">
+                    <textarea name="brief" cols="30" rows="3" style="word-wrap: break-word"
+                              class="form-control mr-sm-2"
+                              placeholder="<spring:message code="brief"/>" required>
+                    </textarea>
+                    <div style="color:red">
+                        <form:errors path="brief"/>
+                    </div>
+                    </spring:bind>
                 </tr>
                 <tr>
                     <br>
-                    <textarea name="content" cols="30" rows="10" style="word-wrap: break-word" class="form-control mr-sm-2"
-                              placeholder="<spring:message code="content"/>" aria-label="Search"></textarea>
+                    <spring:bind path="content">
+                    <textarea name="content" cols="30" rows="10" style="word-wrap: break-word"
+                              class="form-control mr-sm-2"
+                              placeholder="<spring:message code="content"/>" required>
+                    </textarea>
+                    <div style="color:red">
+                        <form:errors path="content"/>
+                    </div>
+                    </spring:bind>
                 </tr>
                 <tr>
                     <br>
@@ -68,8 +80,6 @@
                 </tbody>
             </table>
         </form:form>
-
-        <tagFile:newsValidateErrors/>
 
     </div>
 </main>

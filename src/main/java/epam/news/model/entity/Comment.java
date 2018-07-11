@@ -71,5 +71,4 @@ public class Comment extends Basic {
         this.newsId = newsId;
     }
 
-
 }

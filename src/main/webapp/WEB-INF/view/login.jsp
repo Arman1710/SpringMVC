@@ -47,7 +47,6 @@
     <button class="btn btn-lg btn-primary btn-block" type="submit"><spring:message code="logIn"/></button>
     <br>
     <h4 class="text-center"><a href="/registrationPage"><spring:message code="registration"/></a></h4>
-
     <p class="mt-5 mb-3 text-muted">&copy;2018</p>
 </form:form>
 

@@ -1,6 +1,7 @@
 package epam.news.services;
 
 import epam.news.dao.UserDAO;
+import epam.news.model.entity.Role;
 import epam.news.model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

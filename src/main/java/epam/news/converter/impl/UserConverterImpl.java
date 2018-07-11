@@ -2,6 +2,7 @@ package epam.news.converter.impl;
 
 import epam.news.converter.UserConverter;
 import epam.news.model.dto.UserDTO;
+import epam.news.model.entity.Role;
 import epam.news.model.entity.User;
 import org.springframework.stereotype.Component;
 
@@ -19,10 +20,12 @@ public class UserConverterImpl implements UserConverter {
     @Override
     public UserDTO entityToDTO(User user) {
         UserDTO userDTO = new UserDTO();
-        userDTO.setUsername(user.getUsername());
-        userDTO.setPassword(user.getPassword());
-        userDTO.setRole(user.getRole());
-        userDTO.setUserId(user.getUserId());
+//        userDTO.setUsername(user.getUsername());
+//        userDTO.setPassword(user.getPassword());
+////        for(Role role : user.getRoleList()) {
+////            userDTO.getRoleList().add(role);
+////        }
+//        userDTO.setUserId(user.getUserId());
         return userDTO;
     }
 }

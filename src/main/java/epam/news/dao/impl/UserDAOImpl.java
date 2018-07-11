@@ -6,7 +6,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -67,7 +66,7 @@ public class UserDAOImpl implements UserDAO {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        session.save(user);
+        session.saveOrUpdate(user);
 
         session.getTransaction().commit();
         session.close();
@@ -85,4 +84,5 @@ public class UserDAOImpl implements UserDAO {
 
         return (User) criteria.uniqueResult();
     }
+
 }

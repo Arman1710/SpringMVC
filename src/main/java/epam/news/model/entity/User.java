@@ -5,10 +5,11 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User extends Basic{
+public class User extends Basic {
 
     @Id
     @GeneratedValue(generator = "increment")
@@ -22,17 +23,29 @@ public class User extends Basic{
     @Column(nullable = false)
     private String password;
 
+    @Column (nullable = false)
+    private Long roleId;
+
     @Transient
     private String confirmPassword;
 
 
-    @OneToOne
-    @JoinColumn(name="roleId")
-    private Role role;
+//    @ManyToMany
+//    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "userId"),
+//            inverseJoinColumns = @JoinColumn(name = "roleId"))
+//    private List<Role> roleList;
 
-//    @ManyToOne
-//    @JoinColumn (name = "roleId", insertable = false, updatable = false)
+
+//    @OneToOne
+//    @JoinColumn(name = "roleId")
 //    private Role role;
+
+//    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Role> roleList = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "roleId", insertable = false, updatable = false)
+    private Role role;
 
     public Long getUserId() {
         return userId;
@@ -74,15 +87,11 @@ public class User extends Basic{
         this.confirmPassword = confirmPassword;
     }
 
+    public Long getRoleId() {
+        return roleId;
+    }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", confirmPassword='" + confirmPassword + '\'' +
-                ", role=" + role +
-                '}';
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 }

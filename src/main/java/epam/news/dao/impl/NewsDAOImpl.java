@@ -9,6 +9,7 @@ import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Repository
@@ -22,13 +23,8 @@ public class NewsDAOImpl implements NewsDAO {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
+        List newsList = session.createQuery("FROM News order by newsId DESC").list();
 
-        Criteria criteria = session.createCriteria(News.class);
-        criteria.addOrder(Order.desc("newsId"));
-        List<News> newsList = criteria.list();
-
-        session.getTransaction().commit();
-        session.close();
 
         return newsList;
     }

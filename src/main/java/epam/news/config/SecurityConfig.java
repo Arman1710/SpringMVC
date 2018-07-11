@@ -25,18 +25,14 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void registerGlobalAuthentication(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .userDetailsService(userDetailsServiceImpl);
-//                .passwordEncoder(bCryptPasswordEncoder);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-//                .csrf()
-//                .and()
                 .authorizeRequests()
-                .antMatchers("/main", "/selectedNews", "/registration", "/login").permitAll()
-                .antMatchers("/addComment").hasRole("USER")
-
+//                .antMatchers("/main", "/selectedNews", "/registration", "/login").permitAll()
+//                .antMatchers("/addComment").hasRole("USER")
                 .antMatchers("/admin/*").hasRole("ADMIN")
 //                .anyRequest().hasRole("ADMIN")
                 .anyRequest().permitAll()
@@ -47,7 +43,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
                 .failureUrl("/login?error")
-                .successForwardUrl("/main")
+                .defaultSuccessUrl("/main")
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .permitAll()

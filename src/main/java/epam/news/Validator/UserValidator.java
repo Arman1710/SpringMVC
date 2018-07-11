@@ -1,7 +1,6 @@
 package epam.news.Validator;
 
 import epam.news.model.dto.UserDTO;
-import epam.news.model.entity.User;
 import epam.news.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

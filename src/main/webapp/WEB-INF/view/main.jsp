@@ -3,6 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="tagFile" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -14,74 +15,53 @@
 </head>
 
 <body>
-
-<header>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="?lang=ru"><spring:message code="locale.russian"/> </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="?lang=en"><spring:message code="locale.english"/></a>
-                </li>
-                <li class="float-right">
-                    <a class="nav-link" href="/"><spring:message code="logIn"/></a>
-                </li>
-                <form:form id="logoutForm" method="POST" action="/logout">
-                    <button type="submit" class="btn btn-primary btn-sm"><spring:message code="logOut"/></button>
-
-                </form:form>
-            </ul>
-        </div>
-    </nav>
-</header>
-
+<tagFile:header/>
 <main role="main">
 
-
-
-    <form:form action="admin/deleteNews" method="get">
         <div class="jumbotron">
             <div class="container">
                 <h1 class="display-3"><spring:message code="mainPage"/></h1>
             </div>
         </div>
-
-    <div class="row">
-        <div class="col-1">
-            <div class="container">
-                <p class="float-left">
-                    <sec:authorize access="hasRole('ROLE_ADMIN')">
-                        <a class="btn btn-primary btn-md" href="/admin/addNewsPage" role="button"><spring:message
-                                code="addNews"/></a><br>
-                        <br>
-                        <a><button type="submit" class="btn btn-primary btn-md"><spring:message code="removeNews"/></button></a>
-                    </sec:authorize>
-                </p>
-            </div>
-        </div>
-        <div class="col-11">
-            <div class="container">
-                <div class="row" >
-                    <c:forEach items="${newsList}" var="news">
-                        <div class="col-12">
-                            <h2>${news.title}</h2>
-
-                            <p>${news.brief}</p>
-
-                            <p class="float-right"><a class="btn btn-success"  href="/selectedNews?newsId=${news.newsId}"
-                                                      role="button"><spring:message code="open"/></a>
-                                <input type="checkbox" name="checkedNews" value="${news.newsId}">
-                            <hr>
-                            </p>
-                        </div>
-                    </c:forEach>
+    <form:form action="/admin/deleteNews" method="get">
+        <div class="row">
+            <div class="col-1">
+                <div class="container">
+                    <p class="float-left">
+                        <sec:authorize access="hasRole('ROLE_ADMIN')">
+                            <a class="btn btn-primary btn-md" href="/admin/addNewsPage" role="button"><spring:message
+                                    code="addNews"/></a><br>
+                            <br>
+                            <a>
+                                <button type="submit" class="btn btn-primary btn-md"><spring:message
+                                        code="removeNews"/></button>
+                            </a>
+                        </sec:authorize>
+                    </p>
                 </div>
             </div>
+            <div class="col-11">
+                <div class="container">
+                    <div class="row">
+                        <c:forEach items="${newsList}" var="news">
+                            <div class="col-12">
+                                <h2>${news.title}</h2>
 
-            <hr>
-        </div>
+                                <p>${news.brief}</p>
+
+                                <p class="float-right"><a class="btn btn-success"
+                                                          href="/selectedNews?newsId=${news.newsId}"
+                                                          role="button"><spring:message code="open"/></a>
+                                    <input type="checkbox" name="checkedNews" value="${news.newsId}">
+                                <hr>
+                                </p>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
+
+                <hr>
+            </div>
         </div>
     </form:form>
 </main>
